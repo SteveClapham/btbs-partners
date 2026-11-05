@@ -1,0 +1,9 @@
+# Keep private/working files out of the public GitHub Pages site
+BTBS Brand Guidelines.pdf
+BTBS_RGB_Rev.jpg
+Partner Links Tracker.xlsx
+~$*.xlsx
+PRD.md
+Memory.md
+CLAUDE.md
+.claude/
