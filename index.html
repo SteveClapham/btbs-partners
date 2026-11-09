@@ -43,7 +43,7 @@
   header.site{background:var(--navy);color:#fff;position:relative;overflow:hidden}
   header.site::after{content:"";position:absolute;right:-180px;top:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.07),rgba(255,255,255,0));pointer-events:none}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0}
-  .brand img{height:68px;width:auto}
+  .brand img{height:100px;width:auto}
   .topnav{display:flex;align-items:center;gap:22px;font-size:15px;font-weight:600}
   .topnav a{text-decoration:none;opacity:.82}
   .topnav a:hover{opacity:1;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:6px}
@@ -82,6 +82,12 @@
   .plate .wordmark{font-weight:800;font-size:30px;letter-spacing:-.02em}
   .chip{position:absolute;top:12px;left:12px;z-index:1;background:var(--red);color:#fff;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
   .chip.draft{background:#f3c94b;color:#3d2f00}
+  /* Sample cards: diagonal stamp + no live link */
+  .card.sample::after{content:"SAMPLE";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);z-index:2;pointer-events:none;
+    font-size:64px;font-weight:800;letter-spacing:.14em;color:rgba(229,37,33,.17);border:5px solid rgba(229,37,33,.17);border-radius:12px;padding:0 18px;line-height:1.25;white-space:nowrap}
+  .four .card.sample::after{font-size:50px}
+  .cta.disabled{background:#c9cdd8;color:#4a5068;cursor:not-allowed}
+  .cta.disabled:hover{background:#c9cdd8}
 
   .body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
   .body h3{margin:0;font-size:22px;font-weight:800;color:var(--navy);line-height:1.2}
@@ -136,7 +142,7 @@
     .shop .actions{grid-column:1 / -1;min-width:0}
   }
   @media (max-width:600px){
-    .brand img{height:54px}
+    .brand img{height:72px}
     .hero{padding:20px 0 42px}
     .sec-head{flex-direction:column;align-items:flex-start}
     .sec-head p{text-align:left}
@@ -207,7 +213,7 @@
       <h2><span class="num">04</span>Investment research tools</h2>
       <p>Specialist tools we rate for doing your own research.</p>
     </div>
-    <div class="grid" data-group="research"></div>
+    <div class="grid four" data-group="research"></div>
   </section>
 
   <section class="block" id="shop">
@@ -255,6 +261,7 @@
    facts:   up to three [big, small] pairs shown as a stat row.
    deal:    text for the coloured band at the bottom of the card, e.g. "BTBS listeners save 20%".
             Add dealPending: true while it's still being negotiated. Pending bands only show in preview.
+   sample:  true = shown with a SAMPLE stamp and no live link (leave url out).
    draft:   true = suggestion we haven't signed yet. Only shows in preview (localhost or ?preview).
    plate:   logo box: { bg, img, fit: "contain" | "tall" | "fill" | "zoom" | "logo-tile" | "icon-text", text, color }
    ===================================================================== */
@@ -305,7 +312,7 @@ const PARTNERS = [
     desc: "An FCA-regulated, LSE-listed broker for share dealing, ISAs, spread betting and CFDs across thousands of markets.",
     deal: "BTBS account offer – being agreed", dealPending: true,
     risk: "*Other fees may apply. Capital at risk. CFDs and spread bets are complex and carry a high risk of losing money rapidly due to leverage.",
-    cta: "Open an account", url: "https://www.cmcmarkets.com/en-gb/", placeholder: true,
+    cta: "Open an account", sample: true,
     plate: { bg: "#0e1726", img: "logos/cmc-white.svg", fit: "tall" }
   },
 
@@ -325,7 +332,7 @@ const PARTNERS = [
     facts: [["Ranks", "quality, value, momentum"], ["Global", "stock coverage"], ["14-day", "free trial"]],
     desc: "Rankings, screens and analyst insight that help you invest with data and discipline, not guesswork.",
     deal: "BTBS listeners save 20%", dealPending: true,
-    cta: "Try Stockopedia free", url: "https://www.stockopedia.com/", placeholder: true,
+    cta: "Try Stockopedia free", sample: true,
     plate: { bg: "#ffffff", img: "logos/stockopedia.svg", fit: "contain" }
   },
   {
@@ -334,7 +341,7 @@ const PARTNERS = [
     facts: [["Stocks", "plus ETFs, FX, bonds"], ["Custom", "dashboards"], ["Free", "plan available"]],
     desc: "Research markets, analyse portfolios and build reports, with Bloomberg-style charts and data at a fraction of the cost.",
     deal: "BTBS listeners save 20%", dealPending: true,
-    cta: "Sign up free", url: "https://www.koyfin.com/", placeholder: true,
+    cta: "Sign up free", sample: true,
     plate: { bg: "#ffffff", img: "logos/koyfin.svg", fit: "contain" }
   },
   {
@@ -343,37 +350,46 @@ const PARTNERS = [
     facts: [["Minutes", "after earnings"], ["API", "& AI connectors"], ["Sourced", "auditable data"]],
     desc: "An all-in-one research terminal combining clean, sourced financial data with an AI you can question in plain English.",
     deal: "BTBS listeners save 20%", dealPending: true,
-    cta: "Explore Fiscal.ai", url: "https://fiscal.ai/", placeholder: true,
+    cta: "Explore Fiscal.ai", sample: true,
     plate: { bg: "#0b0d12", img: "logos/fiscal-ai-icon.svg", fit: "icon-text", text: "Fiscal.ai", color: "#ffffff" }
   },
 
-  /* ---------- 04 Research tools (suggestions to pitch: draft = preview only) ---------- */
+  /* ---------- 04 Research tools (samples: no live links yet) ---------- */
   {
-    id: "hudson-labs", group: "research", name: "Hudson Labs", draft: true,
+    id: "hudson-labs", group: "research", name: "Hudson Labs",
     tagline: "AI that reads filings for accounting red flags",
     facts: [["Forensic", "accounting signals"], ["SEC", "filings & calls"], ["AI", "summaries"]],
     desc: "Flags aggressive accounting, governance risks and changes in disclosure language. It's a natural fit for BTBS forensic-accounting students.",
     deal: "BTBS offer to be agreed", dealPending: true,
-    cta: "Explore Hudson Labs", url: "https://www.hudson-labs.com/", placeholder: true,
+    cta: "Explore Hudson Labs", sample: true,
     plate: { bg: "#0f2b3d", fit: "text", text: "Hudson Labs", color: "#ffffff" }
   },
   {
-    id: "quartr", group: "research", name: "Quartr", draft: true,
+    id: "quartr", group: "research", name: "Quartr",
     tagline: "Earnings calls, transcripts and IR material in one place",
     facts: [["Live", "earnings calls"], ["Transcripts", "& slide decks"], ["Mobile", "& desktop"]],
     desc: "Listen to calls live or on demand and search transcripts, reports and presentations from listed companies worldwide.",
     deal: "BTBS offer to be agreed", dealPending: true,
-    cta: "Explore Quartr", url: "https://quartr.com/", placeholder: true,
+    cta: "Explore Quartr", sample: true,
     plate: { bg: "#ffffff", fit: "text", text: "Quartr", color: "#111111" }
   },
   {
-    id: "tikr", group: "research", name: "TIKR", draft: true,
+    id: "tikr", group: "research", name: "TIKR",
     tagline: "Pro-grade global financials for individual investors",
     facts: [["Global", "stock coverage"], ["Analyst", "estimates"], ["10-yr+", "financial history"]],
     desc: "Financial statements, valuation multiples, consensus estimates and transcripts, at a price private investors can afford.",
     deal: "BTBS offer to be agreed", dealPending: true,
-    cta: "Explore TIKR", url: "https://www.tikr.com/", placeholder: true,
+    cta: "Explore TIKR", sample: true,
     plate: { bg: "#1b4dff", fit: "text", text: "TIKR", color: "#ffffff" }
+  },
+  {
+    id: "daloopa", group: "research", name: "Daloopa",
+    tagline: "Fundamental data pulled straight from filings",
+    facts: [["Historicals", "from filings & decks"], ["Excel", "add-in"], ["Linked", "to source"]],
+    desc: "Automates the grind of building and updating models: every data point is extracted from company documents and linked back to its source.",
+    deal: "BTBS offer to be agreed", dealPending: true,
+    cta: "Explore Daloopa", sample: true,
+    plate: { bg: "#ffffff", fit: "text", text: "Daloopa", color: "#202950" }
   }
 ];
 
@@ -409,13 +425,17 @@ function dealHTML(p) {
     if (!PREVIEW) return "";
     return `<div class="deal pending">${TAG}<div><span class="k">Pending deal (preview only)</span><strong>${esc(p.deal)}</strong></div></div>`;
   }
+  if (p.sample || !p.url) return `<div class="deal">${TAG}<div><span class="k">BTBS offer</span><strong>${esc(p.deal)}</strong></div></div>`;
   const note = PREVIEW && p.dealNote ? ` <em style="font-weight:400;opacity:.8">(${esc(p.dealNote)})</em>` : "";
   return `<a class="deal" href="${esc(p.url)}" target="_blank" rel="sponsored noopener" data-track="${p.id}-deal">${TAG}<div><span class="k">BTBS offer</span><strong>${esc(p.deal)}${note}</strong></div></a>`;
 }
 
 function cardHTML(p) {
   const facts = (p.facts || []).map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join("");
-  return `<article class="card${p.group === "sponsors" ? " sponsor" : ""}" id="${p.id}">
+  const cta = p.sample || !p.url
+    ? `<span class="cta disabled" aria-disabled="true">Link coming soon</span>`
+    : `<a class="cta" href="${esc(p.url)}" target="_blank" rel="sponsored noopener" data-track="${p.id}">${esc(p.cta)} ${ARROW}</a>`;
+  return `<article class="card${p.group === "sponsors" ? " sponsor" : ""}${p.sample ? " sample" : ""}" id="${p.id}"${p.sample ? ' aria-label="' + esc(p.name) + ' (sample)"' : ""}>
     ${plateHTML(p)}
     <div class="body">
       <h3>${esc(p.name)}</h3>
@@ -423,7 +443,7 @@ function cardHTML(p) {
       ${facts ? `<ul class="facts">${facts}</ul>` : ""}
       <p class="desc">${esc(p.desc)}</p>
       ${p.risk ? `<p class="risk">${esc(p.risk)}</p>` : ""}
-      <a class="cta" href="${esc(p.url)}" target="_blank" rel="sponsored noopener" data-track="${p.id}">${esc(p.cta)} ${ARROW}</a>
+      ${cta}
     </div>
     ${dealHTML(p)}
   </article>`;
